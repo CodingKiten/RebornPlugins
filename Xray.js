@@ -24,8 +24,12 @@
 
   function update() {
     Object.keys(PluginAPI.blocks).forEach(block => {
-      if (xrayEnabled && xrayBlocks.includes(block)) {
-        PluginAPI.blocks[block].forceRender = true;
+      if (xrayEnabled) {
+        if (xrayBlocks.includes(block)) {
+          PluginAPI.blocks[block].forceRender = true;
+        } else {
+          PluginAPI.blocks[block].forceRender = false;
+        }
         PluginAPI.blocks[block].reload();
       } else {
         PluginAPI.blocks[block].forceRender = false;
