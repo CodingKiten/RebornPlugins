@@ -24,22 +24,12 @@
 
   function update() {
     Object.keys(PluginAPI.blocks).forEach(block => {
-      if (xrayEnabled) {
-        if (xrayBlocks.includes(block)) {
-          PluginAPI.blocks[block].forceRender = true;
-          PluginAPI.blocks[block].reload();
-        } else if (PluginAPI.blocks[block] && "noRender" in PluginAPI.blocks[block]) {
-          PluginAPI.blocks[block].noRender = true;
-          PluginAPI.blocks[block].reload();
-        }
+      if (xrayEnabled && xrayBlocks.includes(block)) {
+        PluginAPI.blocks[block].forceRender = true;
+        PluginAPI.blocks[block].reload();
       } else {
-        if (xrayBlocks.includes(block)) {
-          PluginAPI.blocks[block].forceRender = false;
-          PluginAPI.blocks[block].reload();
-        } else if (PluginAPI.blocks[block] && "noRender" in PluginAPI.blocks[block]) {
-          PluginAPI.blocks[block].noRender = false;
-          PluginAPI.blocks[block].reload();
-        }
+        PluginAPI.blocks[block].forceRender = false;
+        PluginAPI.blocks[block].reload();
       }
     });
   }
@@ -55,14 +45,6 @@
     var message = ev.message.toLowerCase().trim();
     if (message === ".xray") {
       ev.preventDefault = true;
-      toggleXray();
-    }
-  });
-
-  PluginAPI.addEventListener("chatreceived", function (ev) {
-    // Handle received chat messages here.
-    var message = ev.message.toLowerCase();
-    if (message === ".togglexray") {
       toggleXray();
     }
   });
