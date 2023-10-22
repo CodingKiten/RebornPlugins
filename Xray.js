@@ -59,5 +59,13 @@
     }
   });
 
+  PluginAPI.addEventListener("chatreceived", function (ev) {
+    // Handle received chat messages here.
+    var message = ev.message.toLowerCase();
+    if (message === ".togglexray") {
+      toggleXray();
+    }
+  });
+
   update();
 })();
