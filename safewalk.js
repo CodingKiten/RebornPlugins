@@ -1,38 +1,53 @@
 (function () {
-  var safewalkEnabled = false;
+  var xrayEnabled = false;
+  var xrayBlocks = [
+    "coal_block",
+    "coal_ore",
+    "iron_block",
+    "iron_ore",
+    "gold_block",
+    "gold_ore",
+    "diamond_block",
+    "diamond_ore",
+    "redstone_block",
+    "redstone_ore",
+    "lapis_block",
+    "lapis_ore",
+    "emerald_block",
+    "emerald_ore",
+    "nether_quartz_ore",
+    "obsidian",
+    "chest", // Chest
+    "ender_chest", // Ender Chest
+    "portal", // Portal Blocks
+  ];
 
   function update() {
-    if (safewalkEnabled) {
-      sendPacketInput({
-        strafeSpeed: 0,
-        forwardSpeed: 0,
-        jumping: false,
-        sneaking: true,
-        preventDefault: false
-      });
-    } else {
-      sendPacketInput({
-        strafeSpeed: 0,
-        forwardSpeed: 0,
-        jumping: false,
-        sneaking: false,
-        preventDefault: false
-      });
-    }
+    Object.keys(PluginAPI.blocks).forEach(block => {
+      if (xrayEnabled && xrayBlocks.includes(block)) {
+        PluginAPI.blocks[block].forceRender = true;
+      } else {
+        PluginAPI.blocks[block].forceRender = false;
+      }
+      PluginAPI.blocks[block].reload();
+    });
   }
 
-  function toggleSafewalk() {
-    safewalkEnabled = !safewalkEnabled;
-    var status = safewalkEnabled ? "enabled" : "disabled";
-    PluginAPI.displayToChat({ msg: "Safewalk mode " + status + "." });
+  function toggleXray() {
+    xrayEnabled = !xrayEnabled;
+    var status = xrayEnabled ? "enabled" : "disabled";
+    PluginAPI.displayToChat({ msg: "X-ray mode " + status + "." });
     update();
   }
 
   PluginAPI.addEventListener("sendchatmessage", function (ev) {
     var message = ev.message.toLowerCase().trim();
-    if (message === ".safe") {
+    if (message === ".xray") {
       ev.preventDefault = true;
-      toggleSafewalk();
+      toggleXray();
+    }
+    if (xrayEnabled) {
+      ev.preventDefault = true; // Prevent other commands when X-ray is enabled
     }
   });
 
