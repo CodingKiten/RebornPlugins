@@ -13,39 +13,24 @@ window.addEventListener("keydown", (event) => {
       cubeElement.style.height = "100px";
       cubeElement.style.backgroundColor = "red";
       cubeElement.style.transform = "scale(0)";
+      cubeElement.style.transition = "transform 0.5s";
 
       // Append the cube to the body
       document.body.appendChild(cubeElement);
 
       // Trigger animation to open the cube
-      cubeElement.animate(
-        [
-          { transform: "scale(0)" },
-          { transform: "scale(1)" }
-        ],
-        {
-          duration: 500,
-          easing: "ease"
-        }
-      );
+      cubeElement.style.transform = "scale(1)";
 
       // Set the cube visibility to true
       cubeVisible = true;
     } else {
       // Trigger animation to close the cube
-      cubeElement.animate(
-        [
-          { transform: "scale(1)" },
-          { transform: "scale(0)" }
-        ],
-        {
-          duration: 500,
-          easing: "ease"
-        }
-      ).onfinish = () => {
-        // Remove the cube element from the DOM
+      cubeElement.style.transform = "scale(0)";
+
+      // Remove the cube element from the DOM after the animation finishes
+      setTimeout(() => {
         cubeElement.remove();
-      };
+      }, 500);
 
       // Set the cube visibility to false
       cubeVisible = false;
