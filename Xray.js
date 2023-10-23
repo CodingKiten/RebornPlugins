@@ -26,13 +26,13 @@
     Object.keys(PluginAPI.blocks).forEach(block => {
       if (xrayEnabled) {
         if (xrayBlocks.includes(block)) {
-          PluginAPI.blocks[block].specialRender = true; // Enable special rendering
+          PluginAPI.blocks[block].forceRender = true;
         } else {
-          PluginAPI.blocks[block].specialRender = false; // Disable special rendering
+          PluginAPI.blocks[block].forceRender = false;
         }
         PluginAPI.blocks[block].reload();
       } else {
-        PluginAPI.blocks[block].specialRender = false; // Disable special rendering
+        PluginAPI.blocks[block].forceRender = false;
         PluginAPI.blocks[block].reload();
       }
     });
