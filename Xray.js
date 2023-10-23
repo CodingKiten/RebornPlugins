@@ -1,6 +1,5 @@
 (function () {
-  var xrayEnabled = false;
-  var xrayBlocks = [
+  var targets = [
     "coal_block",
     "coal_ore",
     "iron_block",
@@ -17,41 +16,24 @@
     "emerald_ore",
     "nether_quartz_ore",
     "obsidian",
-    "chest", // Chest
-    "ender_chest", // Ender Chest
-    "portal", // Portal Blocks
+    "chest",
+    "ender_chest",
+    "portal",
   ];
 
+  var allBlocks = Object.keys(PluginAPI.blocks);
+
   function update() {
-    Object.keys(PluginAPI.blocks).forEach(block => {
-      if (xrayEnabled) {
-        if (xrayBlocks.includes(block)) {
-          PluginAPI.blocks[block].forceRender = true;
-        } else {
-          PluginAPI.blocks[block].forceRender = false;
-        }
+    allBlocks.forEach(block => {
+      if (targets.includes(block)) {
+        PluginAPI.blocks[block].forceRender = true;
         PluginAPI.blocks[block].reload();
-      } else {
-        PluginAPI.blocks[block].forceRender = false;
+      } else if (PluginAPI.blocks[block] && "noRender" in PluginAPI.blocks[block]) {
+        PluginAPI.blocks[block].noRender = true;
         PluginAPI.blocks[block].reload();
       }
     });
   }
-
-  function toggleXray() {
-    xrayEnabled = !xrayEnabled;
-    var status = xrayEnabled ? "enabled" : "disabled";
-    PluginAPI.displayToChat({ msg: "X-ray mode " + status + "." });
-    update();
-  }
-
-  PluginAPI.addEventListener("sendchatmessage", function (ev) {
-    var message = ev.message.toLowerCase().trim();
-    if (message === ".xray") {
-      ev.preventDefault = true;
-      toggleXray();
-    }
-  });
 
   update();
 })();
