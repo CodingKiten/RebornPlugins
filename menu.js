@@ -5,8 +5,8 @@ window.addEventListener("keydown", (event) => {
   if (event.code === "ShiftRight") {
     if (!cubeVisible) {
       cubeElement = document.createElement("div");
-      cubeElement.style.width = "600px"; // Increase width to fit a mod menu size
-      cubeElement.style.height = "400px"; // Increase height to fit a mod menu size
+      cubeElement.style.width = "600px";
+      cubeElement.style.height = "400px";
       cubeElement.style.backgroundColor = "red";
       cubeElement.style.position = "fixed";
       cubeElement.style.top = "50%";
